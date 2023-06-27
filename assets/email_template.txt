@@ -6,6 +6,7 @@
                                         `._,._,'
   nf-core/rnaseq v${version}
 ----------------------------------------------------
+
 Run Name: $runName
 
 <% if (!success){
@@ -17,12 +18,14 @@ The full error message was:
 
 ${errorReport}
 """
-} else if (skip_sample_count > 0) {
+} else if (fail_percent_mapped.size() > 0) {
     out << """##################################################
 ## nf-core/rnaseq execution completed with warnings ##
 ##################################################
-The pipeline finished successfully, but samples were skipped.
-Please check warnings at the top of the MultiQC report.
+The pipeline finished successfully, but the following samples were skipped,
+due to very low alignment (less than ${min_mapped_reads}%):
+
+  - ${fail_percent_mapped.join("\n  - ")}
 """
 } else {
     out << "## nf-core/rnaseq execution completed successfully! ##"

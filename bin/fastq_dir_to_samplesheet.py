@@ -18,8 +18,8 @@ def parse_args(args=None):
         "--strandedness",
         type=str,
         dest="STRANDEDNESS",
-        default="auto",
-        help="Value for 'strandedness' in samplesheet. Must be one of 'unstranded', 'forward', 'reverse', 'auto'.",
+        default="unstranded",
+        help="Value for 'strandedness' in samplesheet. Must be one of 'unstranded', 'forward', 'reverse'.",
     )
     parser.add_argument(
         "-r1",
@@ -67,53 +67,46 @@ def parse_args(args=None):
         default=1,
         help="After splitting FastQ file name by --sanitise_name_delimiter all elements before this index (1-based) will be joined to create final sample name.",
     )
-    parser.add_argument(
-        "-re",
-        "--recursive",
-        dest="RECURSIVE",
-        action="store_true",
-        help="Whether or not to search for FastQ files recursively in <FASTQ_DIR>.",
-    )
     return parser.parse_args(args)
 
 
 def fastq_dir_to_samplesheet(
     fastq_dir,
     samplesheet_file,
-    strandedness="auto",
+    strandedness="unstranded",
     read1_extension="_R1_001.fastq.gz",
     read2_extension="_R2_001.fastq.gz",
     single_end=False,
     sanitise_name=False,
     sanitise_name_delimiter="_",
     sanitise_name_index=1,
-    recursive=False,
 ):
     def sanitize_sample(path, extension):
         """Retrieve sample id from filename"""
         sample = os.path.basename(path).replace(extension, "")
         if sanitise_name:
             sample = sanitise_name_delimiter.join(
-                os.path.basename(path).split(sanitise_name_delimiter)[:sanitise_name_index]
+                os.path.basename(path).split(sanitise_name_delimiter)[
+                    :sanitise_name_index
+                ]
             )
         return sample
 
-    def get_fastqs(extension, recursive=False):
+    def get_fastqs(extension):
         """
         Needs to be sorted to ensure R1 and R2 are in the same order
         when merging technical replicates. Glob is not guaranteed to produce
         sorted results.
         See also https://stackoverflow.com/questions/6773584/how-is-pythons-glob-glob-ordered
         """
-        search_path = f"*{extension}"
-        if recursive:
-            search_path = f"**/*{extension}"
-        return sorted(glob.glob(os.path.join(fastq_dir, search_path), recursive=recursive))
+        return sorted(
+            glob.glob(os.path.join(fastq_dir, f"*{extension}"), recursive=False)
+        )
 
     read_dict = {}
 
     ## Get read 1 files
-    for read1_file in get_fastqs(read1_extension, recursive):
+    for read1_file in get_fastqs(read1_extension):
         sample = sanitize_sample(read1_file, read1_extension)
         if sample not in read_dict:
             read_dict[sample] = {"R1": [], "R2": []}
@@ -121,7 +114,7 @@ def fastq_dir_to_samplesheet(
 
     ## Get read 2 files
     if not single_end:
-        for read2_file in get_fastqs(read2_extension, recursive):
+        for read2_file in get_fastqs(read2_extension):
             sample = sanitize_sample(read2_file, read2_extension)
             read_dict[sample]["R2"].append(read2_file)
 
@@ -142,7 +135,9 @@ def fastq_dir_to_samplesheet(
                     sample_info = ",".join([sample, read_1, read_2, strandedness])
                     fout.write(f"{sample_info}\n")
     else:
-        error_str = "\nWARNING: No FastQ files found so samplesheet has not been created!\n\n"
+        error_str = (
+            "\nWARNING: No FastQ files found so samplesheet has not been created!\n\n"
+        )
         error_str += "Please check the values provided for the:\n"
         error_str += "  - Path to the directory containing the FastQ files\n"
         error_str += "  - '--read1_extension' parameter\n"
@@ -154,8 +149,8 @@ def fastq_dir_to_samplesheet(
 def main(args=None):
     args = parse_args(args)
 
-    strandedness = "auto"
-    if args.STRANDEDNESS in ["unstranded", "forward", "reverse", "auto"]:
+    strandedness = "unstranded"
+    if args.STRANDEDNESS in ["unstranded", "forward", "reverse"]:
         strandedness = args.STRANDEDNESS
 
     fastq_dir_to_samplesheet(
@@ -168,7 +163,6 @@ def main(args=None):
         sanitise_name=args.SANITISE_NAME,
         sanitise_name_delimiter=args.SANITISE_NAME_DELIMITER,
         sanitise_name_index=args.SANITISE_NAME_INDEX,
-        recursive=args.RECURSIVE,
     )
 
 
