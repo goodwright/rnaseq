@@ -8,7 +8,7 @@
                 "input": {
                     "name": "Samples",
                     "type": "sample",
-                    "pattern": "^\\S+\\.csv$",
+                    "pattern": "csv|xlsx",
                     "required": true,
                     "description": "The samples to process.",
                     "csv": {
