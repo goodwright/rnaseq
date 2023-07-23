@@ -12,10 +12,23 @@
                     "required": true,
                     "description": "The samples to process.",
                     "csv": {
-                        "sample": "name",
-                        "fastq_1": "input.1",
-                        "fastq_2": "input.2",
-                        "strandedness": "strandedness"
+                        "sample": {
+                            "property": "name",
+                            "user_override": false
+                        },
+                        "fastq_1": {
+                            "property": "input.1",
+                            "user_override": false
+                        },
+                        "fastq_2": {
+                            "property": "input.2",
+                            "user_override": false
+                        },
+                        "strandedness": {
+                            "property": "strandedness", 
+                            "user_override": true,
+                            "valid": ["unstranded", "forward", "reverse", "auto"]
+                        }
                     }
                 }
             }
