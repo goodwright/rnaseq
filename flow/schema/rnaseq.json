@@ -183,6 +183,29 @@
                 }
             }
         },
+        "primary_options": {
+            "name": "Primary Pipeline Settings",
+            "description": "Major pipeline settings",
+            "advanced": false,
+            "properties": {
+                "aligner": {
+                    "name": "Aligner",
+                    "description": "Specifies the alignment algorithm to use - available options are 'star_salmon', 'star_rsem' and 'hisat2'.",
+                    "type": "string",
+                    "required": true,
+                    "default": "star_salmon",
+                    "valid": ["star_salmon", "star_rsem", "hisat2"]
+                },
+                "pseudo_aligner": {
+                    "name": "Pseudo-aligner",
+                    "description": "Specifies the pseudo-aligner to use - available options are 'salmon'. Runs in addition to '--aligner'.",
+                    "type": "string",
+                    "required": false,
+                    "default": "",
+                    "valid": ["", "salmon"]
+                }
+            }
+        },
         "umi_options": {
             "name": "UMI Settings",
             "description": "Settings for dealing with UMIs",
@@ -256,29 +279,32 @@
                 "min_trimmed_reads": {
                     "name": "Minimum trimmed reads",
                     "description": "Minimum number of trimmed reads below which samples are removed from further processing. Some downstream steps in the pipeline will fail if this threshold is too low.",
-                    "type": "number"
+                    "type": "number",
+                    "required": false
                 },
                 "skip_trimming": {
                     "name": "Skip trimming",
                     "description": "Skip the adapter trimming step.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "save_trimmed": {
                     "name": "Save trimmed",
                     "description": "Save the trimmed FastQ files in the results directory.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "extra_trimgalore_args": {
                     "name": "extra_trimgalore_args",
-                    "required": false,
                     "description": "Extra arguments to pass to Trim Galore! command in addition to defaults defined by the pipeline.",
-                    "type": "string"
+                    "type": "string",
+                    "required": false
                 },
                 "extra_fastp_args": {
                     "name": "extra_fastp_args",
-                    "required": false,
                     "description": "Extra arguments to pass to fastp command in addition to defaults defined by the pipeline.",
-                    "type": "string"
+                    "type": "string",
+                    "required": false
                 }
             }
         },
@@ -287,40 +313,35 @@
             "description": "Settings to control alignment algorithms and quantification.",
             "advanced": true,
             "properties": {
-                "aligner": {
-                    "name": "Aligner",
-                    "description": "Specifies the alignment algorithm to use - available options are 'star_salmon', 'star_rsem' and 'hisat2'.",
-                    "type": "string"
-                },
-                "pseudo_aligner": {
-                    "name": "Pseudo-aligner",
-                    "description": "Specifies the pseudo-aligner to use - available options are 'salmon'. Runs in addition to '--aligner'.",
-                    "type": "string"
-                },
                 "bam_csi_index": {
                     "name": "CSI index",
                     "description": "Create a CSI index for BAM files instead of the traditional BAI index. This will be required for genomes with larger chromosome sizes.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "star_ignore_sjdbgtf": {
                     "name": "STAR ignore sjdbgtf",
                     "description": "When using pre-built STAR indices do not re-extract and use splice junctions from the GTF file.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "salmon_quant_libtype": {
                     "name": "Salmon strandedness",
                     "description": "Override Salmon library type inferred based on strandedness defined in meta object.",
-                    "type": "string"
+                    "type": "string",
+                    "required": false
                 },
                 "min_mapped_reads": {
                     "name": "Minimum mapped reads (%)",
                     "description": "Minimum percentage of uniquely mapped reads below which samples are removed from further processing.",
-                    "type": "number"
+                    "type": "number",
+                    "required": false
                 },
                 "seq_center": {
                     "name": "Sequencing center",
                     "description": "Sequencing center information to be added to read group of BAM files.",
-                    "type": "string"
+                    "type": "string",
+                    "required": false
                 },
                 "stringtie_ignore_gtf": {
                     "name": "Stringtie",
@@ -330,38 +351,44 @@
                 "extra_star_align_args": {
                     "name": "STAR arguments",
                     "description": "Extra arguments to pass to STAR alignment command in addition to defaults defined by the pipeline.",
-                    "type": "string"
+                    "type": "string",
+                    "required": false
                 },
                 "extra_salmon_quant_args": {
                     "name": "Salmon quant arguments",
                     "description": "Extra arguments to pass to Salmon quant command in addition to defaults defined by the pipeline.",
-                    "type": "string"
+                    "type": "string",
+                    "required": false
                 },
                 "save_unaligned": {
                     "name": "Save unaligned reads",
                     "description": "Where possible, save unaligned reads from either STAR, HISAT2 or Salmon to the results directory.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "save_align_intermeds": {
                     "name": "Save intermediate BAM",
                     "description": "Save the intermediate BAM files from the alignment step.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "skip_markduplicates": {
                     "name": "Skip MarkDuplicates",
                     "description": "Skip picard MarkDuplicates step.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "skip_alignment": {
                     "name": "Skip alignment",
                     "description": "Skip all of the alignment-based processes within the pipeline.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "skip_pseudo_alignment": {
                     "name": "Skip Pseudo-alignment",
-                    "required": false,
                     "description": "Skip all of the pseudo-alignment-based processes within the pipeline.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 }
             }
         },
@@ -373,18 +400,21 @@
                 "remove_ribo_rna": {
                     "name": "Remove Ribo RNA",
                     "description": "Enable the removal of reads derived from ribosomal RNA using SortMeRNA.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "ribo_database_manifest": {
                     "name": "Ribo Database Manifest",
                     "description": "Text file containing paths to fasta files (one per line) that will be used to create the database for SortMeRNA.",
                     "type": "string",
-                    "default": "${projectDir}/assets/rrna-db-defaults.txt"
+                    "default": "${projectDir}/assets/rrna-db-defaults.txt",
+                    "required": false
                 },
                 "save_non_ribo_reads": {
                     "name": "Save non-ribo Reads",
                     "description": "If this option is specified, intermediate FastQ files containing non-rRNA reads will be saved in the results directory.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 }
             }
         },
@@ -396,67 +426,82 @@
                 "rseqc_modules": {
                     "name": "RSeQC",
                     "description": "Specify the RSeQC modules to run. Default: 'bam_stat,inner_distance,infer_experiment,junction_annotation,junction_saturation,read_distribution,read_duplication'",
-                    "type": "string"
+                    "type": "string",
+                    "required": false
                 },
                 "deseq2_vst": {
                     "name": "DeSeq2 VST",
                     "description": "Use vst transformation instead of rlog with DESeq2.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false,
+                    "default": true
                 },
                 "skip_bigwig": {
                     "name": "Skip bigwig",
                     "description": "Skip bigWig file creation.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "skip_stringtie": {
                     "name": "Skip stringtie",
                     "description": "Skip StringTie.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "skip_fastqc": {
                     "name": "Skip FastQC",
                     "description": "Skip FastQC.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "skip_preseq": {
                     "name": "Skip preseq",
                     "description": "Skip Preseq.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false,
+                    "default": true
                 },
                 "skip_dupradar": {
                     "name": "Skip dupRadar",
                     "description": "Skip dupRadar.",
-                    "type": "string"
+                    "type": "string",
+                    "required": false
                 },
                 "skip_qualimap": {
                     "name": "Skip Qualimap",
                     "description": "Skip Qualimap.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "skip_rseqc": {
                     "name": "Skip RSeQC",
                     "description": "Skip RSeQC.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "skip_biotype_qc": {
                     "name": "Skip biotype QC",
                     "description": "Skip additional featureCounts process for biotype QC.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "skip_deseq2_qc": {
                     "name": "Skip DeSeq2 QC",
                     "description": "Skip DESeq2 PCA and heatmap plotting.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "skip_multiqc": {
                     "name": "Skip MultiQC",
                     "description": "Skip MultiQC.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 },
                 "skip_qc": {
                     "name": "Skip QC",
                     "description": "Skip all QC steps except for MultiQC.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "required": false
                 }
             }
         },
@@ -468,17 +513,20 @@
                 "email": {
                     "name": "Email",
                     "description": "Email address for completion summary.",
-                    "type": "string"
+                    "type": "string",
+                    "required": false
                 },
                 "multiqc_title": {
                     "name": "MultiQC Report Title",
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
-                    "type": "string"
+                    "type": "string",
+                    "required": false
                 },
                 "multiqc_methods_description": {
                     "name": "multiqc_methods_description",
                     "description": "Custom MultiQC yaml file containing HTML including a methods description.",
-                    "type": "string"
+                    "type": "string",
+                    "required": false
                 }
             }
         }

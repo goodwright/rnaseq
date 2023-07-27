@@ -37,7 +37,7 @@
                 "gencode": {
                     "name": "Is Gencode",
                     "type": "boolean",
-                    "default": "false",
+                    "default": false,
                     "required": false,
                     "description": "If your GTF file is in GENCODE format and you would like to run Salmon i.e. `--pseudo_aligner salmon`, you will need to provide this parameter in order to build the Salmon index appropriately."
                 },
@@ -94,6 +94,12 @@
             "description": "A genome index which HISAT2 can align reads to.",
             "process": "HISAT2_BUILD",
             "filetype": ""
+        },
+        {
+            "name": "HISAT2 Splicesites",
+            "description": "A genome index which HISAT2 can align reads to.",
+            "process": "HISAT2_EXTRACTSPLICESITES",
+            "filetype": "txt"
         }
     ]
 }
