@@ -2,10 +2,10 @@ process UMITOOLS_PREPAREFORRSEM {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::umi_tools=1.1.4"
+    conda (params.enable_conda ? "bioconda::umi_tools=1.1.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/umi_tools:1.1.4--py38hbff2b2d_1' :
-        'biocontainers/umi_tools:1.1.4--py38hbff2b2d_1' }"
+        'https://depot.galaxyproject.org/singularity/umi_tools:1.1.2--py38h4a8c8d9_0' :
+        'quay.io/biocontainers/umi_tools:1.1.2--py38h4a8c8d9_0' }"
 
     input:
     tuple val(meta), path(bam)
