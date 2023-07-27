@@ -66,4 +66,4 @@ jobs:
 
       - name: Run pipeline with test data
         run: |
-          nextflow run ${GITHUB_WORKSPACE}/flow/wrappers/prepare_genome.nf -profile test_cache,docker -c ./nextflow.config -c ./flow/conf/test_wrapper.config --outdir ./results
+          nextflow run ${GITHUB_WORKSPACE}/flow/wrappers/prepare_genome.nf -profile test_cache,docker -c ./flow/conf/test_wrapper.config --outdir ./results
