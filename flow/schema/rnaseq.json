@@ -3,7 +3,7 @@
         "sample_options": {
             "name": "Sample options",
             "description": "Parameters relating to the sample being analysed.",
-            "advanced": false,
+            "advanced" : false,
             "properties": {
                 "input": {
                     "name": "Samples",
@@ -12,10 +12,23 @@
                     "required": true,
                     "description": "The samples to process.",
                     "csv": {
-                        "sample": "name",
-                        "fastq_1": "input.1",
-                        "fastq_2": "input.2",
-                        "strandedness": "strandedness"
+                        "sample": {
+                            "property": "name",
+                            "user_override": false
+                        },
+                        "fastq_1": {
+                            "property": "input.1",
+                            "user_override": false
+                        },
+                        "fastq_2": {
+                            "property": "input.2",
+                            "user_override": false
+                        },
+                        "strandedness": {
+                            "property": "strandedness", 
+                            "user_override": true,
+                            "valid": ["unstranded", "forward", "reverse", "auto"]
+                        }
                     }
                 }
             }
@@ -47,14 +60,14 @@
                     "required": false,
                     "description": "Path to GFF3 annotation file.",
                     "pattern": "^\\S+\\.gff(\\.gz)?$",
-                    "type": "file",
-                    "genome_file": "gff"
+                    "type": "file"
                 },
                 "gencode": {
                     "name": "gencode",
                     "required": false,
                     "description": "Specify if your GTF annotation is in GENCODE format.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "default": false
                 },
                 "gtf_extra_attributes": {
                     "name": "GTF Extra Attributes",
