@@ -3,7 +3,7 @@
         "sample_options": {
             "name": "Sample options",
             "description": "Parameters relating to the sample being analysed.",
-            "advanced" : false,
+            "advanced": false,
             "properties": {
                 "input": {
                     "name": "Samples",
@@ -25,7 +25,7 @@
                             "user_override": false
                         },
                         "strandedness": {
-                            "property": "strandedness", 
+                            "property": "strandedness",
                             "user_override": true,
                             "valid": ["unstranded", "forward", "reverse", "auto"]
                         }
