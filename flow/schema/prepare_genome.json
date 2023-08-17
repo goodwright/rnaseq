@@ -17,7 +17,6 @@
                     "type": "file",
                     "pattern": "^\\S+\\.fn?a(sta)?(\\.gz)?$",
                     "required": false,
-                    "default": "",
                     "description": "FASTA file to concatenate to genome FASTA file e.g. containing spike-in sequences."
                 },
                 "transcript_fasta": {
@@ -25,7 +24,6 @@
                     "type": "file",
                     "pattern": "^\\S+\\.fn?a(sta)?(\\.gz)?$",
                     "required": false,
-                    "default": "",
                     "description": "Path to FASTA transcriptome file."
                 },
                 "gtf": {
