@@ -407,7 +407,7 @@
                     "name": "Ribo Database Manifest",
                     "description": "Text file containing paths to fasta files (one per line) that will be used to create the database for SortMeRNA.",
                     "type": "string",
-                    "default": "${projectDir}/assets/rrna-db-defaults.txt",
+                    "default": "assets/rrna-db-defaults.txt",
                     "required": false
                 },
                 "save_non_ribo_reads": {
