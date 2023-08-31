@@ -541,13 +541,13 @@
         {
             "name": "Normalised bigwig fwd",
             "description": "Genome-wide coverage bigwig to be viewed in genome browser. Contains reads mapping to fwd strand.",
-            "filetype": "bigwig",
+            "filetype": "bigWig",
             "process": "BEDGRAPH_BEDCLIP_BEDGRAPHTOBIGWIG_FORWARD:UCSC_BEDGRAPHTOBIGWIG"
         },
         {
             "name": "Normalised bigwig rev",
             "description": "Genome-wide coverage bigwig to be viewed in genome browser. Contains reads mapping to rev strand.",
-            "filetype": "bigwig",
+            "filetype": "bigWig",
             "process": "BEDGRAPH_BEDCLIP_BEDGRAPHTOBIGWIG_REVERSE:UCSC_BEDGRAPHTOBIGWIG"
         },
         {
