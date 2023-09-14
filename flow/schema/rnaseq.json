@@ -202,7 +202,7 @@
                     "type": "string",
                     "required": false,
                     "default": "",
-                    "valid": ["", "salmon"]
+                    "valid": ["salmon"]
                 }
             }
         },
