@@ -124,7 +124,7 @@
                         "process": "MAKE_TRANSCRIPTS_FASTA",
                         "filetype": "fa"
                     },
-                    "description": "FASTA transcriptome file - generated from the main FASTA if not provided."
+                    "description": " By default, the pipeline will use the genome fasta and gtf file to generate the transcripts fasta file that is used to build the salmon index. This can be overridden by providing a transcripts fasta file."
                 },
                 "star_index": {
                     "name": "STAR Index",
@@ -202,7 +202,7 @@
                     "type": "string",
                     "required": false,
                     "default": "",
-                    "valid": ["", "salmon"]
+                    "valid": ["salmon"]
                 }
             }
         },
