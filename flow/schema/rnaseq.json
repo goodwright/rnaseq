@@ -581,5 +581,35 @@
             "filetype": "tsv",
             "process": "RSEM_MERGE_COUNTS"
         }
-    ]
+    ],
+    "qc": {
+        "average_read_length": {
+            "name": "Average Read Length (after trimming)",
+            "process": "MULTIQC",
+            "file": "multiqc_data/multiqc_fastqc.json",
+            "list_location": ["report_general_stats_data"],
+            "attribute": "avg_sequence_length"
+        },
+        "total_reads": {
+            "name": "Total Reads (after trimming)",
+            "process": "MULTIQC",
+            "file": "multiqc_data/multiqc_fastqc.json",
+            "list_location": ["report_general_stats_data"],
+            "attribute": "total_reads"
+        },
+        "intron_mapping": {
+            "name": "Intron Mapping",
+            "process": "MULTIQC",
+            "file": "multiqc_data/multiqc_fastqc.json",
+            "list_location": ["report_saved_raw_data", "multiqc_rseqc_read_distribution"],
+            "attribute": "introns_tag_pct"
+        },
+        "cds_exon_mapping": {
+            "name": "CDS Exon Mapping Percentage",
+            "process": "MULTIQC",
+            "file": "multiqc_data/multiqc_fastqc.json",
+            "list_location": ["report_saved_raw_data", "multiqc_rseqc_read_distribution"],
+            "attribute": "cds_exons_tag_pct"
+        }
+    }
 }
