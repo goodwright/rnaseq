@@ -1,6 +1,6 @@
 process SORTMERNA {
     tag "$meta.id"
-    label "process_high_memory"
+    label "process_sortmeRNA"
 
     conda "bioconda::sortmerna=4.3.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
