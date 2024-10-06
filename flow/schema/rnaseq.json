@@ -1,59 +1,77 @@
 {
-    "inputs": {
-        "sample_options": {
+    "inputs": [
+        {
             "name": "Sample options",
             "description": "Parameters relating to the sample being analysed.",
             "advanced": false,
-            "properties": {
+            "params": {
                 "input": {
                     "name": "Samples",
-                    "type": "sample",
-                    "pattern": "csv|xlsx",
-                    "required": true,
-                    "categories": ["RNA-Seq"],
                     "description": "The samples to process.",
-                    "csv": {
-                        "sample": {
-                            "property": "name",
-                            "user_override": false
+                    "required": true,
+                    "type": "csv",
+                    "takes_samples": true,
+                    "sample_types": ["RNA-Seq"],
+                    "columns": [
+                        {
+                            "name": "sample",
+                            "type": "string",
+                            "from_sample": "name",
+                            "required": true,
+                            "render": false
                         },
-                        "fastq_1": {
-                            "property": "input.1",
-                            "user_override": false
+                        {
+                            "name": "fastq_1",
+                            "type": "data",
+                            "from_sample": 1,
+                            "required": true,
+                            "render": false
                         },
-                        "fastq_2": {
-                            "property": "input.2",
-                            "user_override": false
+                        {
+                            "name": "fastq_2",
+                            "type": "data",
+                            "from_sample": 2,
+                            "required": false,
+                            "render": false
                         },
-                        "strandedness": {
-                            "property": "strandedness",
-                            "user_override": true,
+                        {
+                            "name": "strandedness",
+                            "type": "string",
+                            "from_sample": "strandedness",
+                            "required": true,
+                            "render": true,
                             "valid": ["unstranded", "forward", "reverse", "auto"]
                         }
-                    }
+                    ]
                 }
             }
         },
-        "genome_options": {
+        {
             "name": "Genome options",
             "description": "The genome being aligned to.",
             "advanced": false,
-            "takes_genome": true,
-            "properties": {
+            "from_execution": true,
+            "params": {
                 "fasta": {
                     "name": "FASTA",
-                    "type": "file",
+                    "type": "data",
                     "pattern": "^\\S+\\.fn?a(sta)?(\\.gz)?$",
                     "required": true,
-                    "genome_file": "fasta",
+                    "execution_output": {
+                        "process": null,
+                        "pattern": "^\\S+\\.fn?a(sta)?(\\.gz)?$"
+                    },
                     "description": "A raw genome FASTA file."
                 },
                 "gtf": {
                     "name": "GTF",
-                    "type": "file",
+                    "type": "data",
                     "pattern": "^\\S+\\.gtf(\\.gz)?$",
                     "required": true,
-                    "genome_file": "gtf",
+                    "execution_output": {
+                        "process": null,
+                        "pattern": "^\\S+\\.gtf(\\.gz)?$"
+                    },
                     "description": "An annotation for the genome."
                 },
                 "gff": {
@@ -61,7 +79,7 @@
                     "required": false,
                     "description": "Path to GFF3 annotation file.",
                     "pattern": "^\\S+\\.gff(\\.gz)?$",
-                    "type": "file"
+                    "type": "data"
                 },
                 "gencode": {
                     "name": "gencode",
@@ -100,95 +118,95 @@
                 },
                 "gene_bed": {
                     "name": "BED",
-                    "type": "file",
+                    "type": "data",
                     "pattern": "bed",
                     "required": false,
-                    "genome_output": {
+                    "execution_output": {
                         "process": "GTF2BED",
-                        "filetype": "bed"
+                        "pattern": "\\.bed$"
                     },
                     "description": "BED file containing gene intervals. This will be created from the GTF file if not specified."
                 },
                 "additional_fasta": {
                     "name": "Additional FASTA",
-                    "type": "file",
+                    "type": "data",
                     "pattern": "fasta|fa$",
                     "required": false,
                     "description": "FASTA file to concatenate to genome FASTA file e.g. containing spike-in sequences."
                 },
                 "transcript_fasta": {
                     "name": "Transcript FASTA",
-                    "type": "file",
+                    "type": "data",
                     "pattern": "fasta|fa$",
                     "required": false,
-                    "genome_output": {
+                    "execution_output": {
                         "process": "MAKE_TRANSCRIPTS_FASTA",
-                        "filetype": "fa"
+                        "pattern": "fasta|fa$"
                     },
                     "description": " By default, the pipeline will use the genome fasta and gtf file to generate the transcripts fasta file that is used to build the salmon index. This can be overridden by providing a transcripts fasta file."
                 },
                 "star_index": {
                     "name": "STAR Index",
-                    "type": "file",
+                    "type": "data",
                     "pattern": "",
                     "required": false,
-                    "genome_output": {
+                    "execution_output": {
                         "process": "STAR_GENOMEGENERATE",
-                        "filetype": ""
+                        "pattern": ""
                     },
                     "description": "A genome index built with STAR."
                 },
                 "rsem_index": {
                     "name": "RSEM Index",
-                    "type": "file",
+                    "type": "data",
                     "pattern": "",
                     "required": false,
-                    "genome_output": {
+                    "execution_output": {
                         "process": "RSEM_PREPAREREFERENCE_GENOME",
-                        "filetype": ""
+                        "pattern": ""
                     },
                     "description": "A genome index built with RSEM."
                 },
                 "splicesites": {
                     "name": "Splicesites",
-                    "type": "file",
+                    "type": "data",
                     "pattern": "txt",
                     "required": false,
-                    "genome_output": {
+                    "execution_output": {
                         "process": "HISAT2_EXTRACTSPLICESITES",
-                        "filetype": "txt"
+                        "pattern": "\\.txt$"
                     },
                     "description": "Splicesites needed for HISAT2 processing."
                 },
                 "hisat2_index": {
                     "name": "HISAT2 Index",
-                    "type": "file",
+                    "type": "data",
                     "pattern": "",
                     "required": false,
-                    "genome_output": {
+                    "execution_output": {
                         "process": "HISAT2_BUILD",
-                        "filetype": ""
+                        "pattern": ""
                     },
                     "description": "A genome index built with HISAT2."
                 },
                 "salmon_index": {
                     "name": "Salmon Index",
-                    "type": "file",
+                    "type": "data",
                     "pattern": "",
                     "required": false,
-                    "genome_output": {
+                    "execution_output": {
                         "process": "SALMON_INDEX",
-                        "filetype": ""
+                        "pattern": ""
                     },
                     "description": "A genome index built with Salmon."
                 }
             }
         },
-        "primary_options": {
+        {
             "name": "Primary Pipeline Settings",
             "description": "Major pipeline settings",
             "advanced": false,
-            "properties": {
+            "params": {
                 "aligner": {
                     "name": "Aligner",
                     "description": "Specifies the alignment algorithm to use - available options are 'star_salmon', 'star_rsem' and 'hisat2'.",
@@ -207,11 +225,11 @@
                 }
             }
         },
-        "umi_options": {
+        {
             "name": "UMI Settings",
             "description": "Settings for dealing with UMIs",
             "advanced": true,
-            "properties": {
+            "params": {
                 "with_umi": {
                     "name": "Deduplicate based on UMIs",
                     "description": "Enable UMI-based read deduplication.",
@@ -265,11 +283,11 @@
                 }
             }
         },
-        "read_trimming_options": {
+        {
             "name": "Read Trimming Settings",
             "description": "Settings to control read quality and adaptor trimming",
             "advanced": true,
-            "properties": {
+            "params": {
                 "trimmer": {
                     "name": "trimmer",
                     "required": false,
@@ -309,11 +327,11 @@
                 }
             }
         },
-        "alignment_options": {
+        {
             "name": "Alignment Settings",
             "description": "Settings to control alignment algorithms and quantification.",
             "advanced": true,
-            "properties": {
+            "params": {
                 "bam_csi_index": {
                     "name": "CSI index",
                     "description": "Create a CSI index for BAM files instead of the traditional BAI index. This will be required for genomes with larger chromosome sizes.",
@@ -393,11 +411,11 @@
                 }
             }
         },
-        "ribosomal_options": {
+        {
             "name": "Ribosomal RNA Settings",
             "description": "Settings to control how ribsomal RNa is handled.",
             "advanced": true,
-            "properties": {
+            "params": {
                 "remove_ribo_rna": {
                     "name": "Remove Ribo RNA",
                     "description": "Enable the removal of reads derived from ribosomal RNA using SortMeRNA.",
@@ -419,11 +437,11 @@
                 }
             }
         },
-        "process_options": {
+        {
             "name": "Process skipping options",
             "description": "Settings to control specific processes.",
             "advanced": true,
-            "properties": {
+            "params": {
                 "rseqc_modules": {
                     "name": "RSeQC",
                     "description": "Specify the RSeQC modules to run. Default: 'bam_stat,inner_distance,infer_experiment,junction_annotation,junction_saturation,read_distribution,read_duplication'",
@@ -434,14 +452,12 @@
                     "name": "DeSeq2 VST",
                     "description": "Use vst transformation instead of rlog with DESeq2.",
                     "type": "boolean",
-                    "required": false,
                     "default": true
                 },
                 "skip_bigwig": {
                     "name": "Skip bigwig",
                     "description": "Skip bigWig file creation.",
-                    "type": "boolean",
-                    "required": false
+                    "type": "boolean"
                 },
                 "skip_stringtie": {
                     "name": "Skip stringtie",
@@ -459,79 +475,58 @@
                     "name": "Skip preseq",
                     "description": "Skip Preseq.",
                     "type": "boolean",
-                    "required": false,
                     "default": true
                 },
                 "skip_dupradar": {
                     "name": "Skip dupRadar",
                     "description": "Skip dupRadar.",
-                    "type": "string",
-                    "required": false
+                    "type": "string"
                 },
                 "skip_qualimap": {
                     "name": "Skip Qualimap",
                     "description": "Skip Qualimap.",
-                    "type": "boolean",
-                    "required": false
+                    "type": "boolean"
                 },
                 "skip_rseqc": {
                     "name": "Skip RSeQC",
                     "description": "Skip RSeQC.",
-                    "type": "boolean",
-                    "required": false
+                    "type": "boolean"
                 },
                 "skip_biotype_qc": {
                     "name": "Skip biotype QC",
                     "description": "Skip additional featureCounts process for biotype QC.",
-                    "type": "boolean",
-                    "required": false
+                    "type": "boolean"
                 },
                 "skip_deseq2_qc": {
                     "name": "Skip DeSeq2 QC",
                     "description": "Skip DESeq2 PCA and heatmap plotting.",
-                    "type": "boolean",
-                    "required": false
+                    "type": "boolean"
                 },
                 "skip_multiqc": {
                     "name": "Skip MultiQC",
                     "description": "Skip MultiQC.",
-                    "type": "boolean",
-                    "required": false
+                    "type": "boolean"
                 },
                 "skip_qc": {
                     "name": "Skip QC",
                     "description": "Skip all QC steps except for MultiQC.",
-                    "type": "boolean",
-                    "required": false
+                    "type": "boolean"
                 }
             }
         },
-        "pipeline_options": {
+        {
             "name": "General pipeline options",
             "description": "Settings to control general pipeline options.",
             "advanced": true,
-            "properties": {
-                "email": {
-                    "name": "Email",
-                    "description": "Email address for completion summary.",
-                    "type": "string",
-                    "required": false
-                },
+            "params": {
                 "multiqc_title": {
                     "name": "MultiQC Report Title",
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
-                    "type": "string",
-                    "required": false
-                },
-                "multiqc_methods_description": {
-                    "name": "multiqc_methods_description",
-                    "description": "Custom MultiQC yaml file containing HTML including a methods description.",
-                    "type": "string",
-                    "required": false
+                    "type": "string"
                 }
             }
         }
-    },
+    ],
     "outputs": [
         {
             "name": "MultiQC report",
@@ -554,7 +549,7 @@
         {
             "name": "Salmon transcript TPM table",
             "description": "Table containing transcript per million (TPM) quantified transcripts per sample.",
-            "filetype": "transcript_tpm.tsv",
+            "pattern": "transcript_tpm.tsv$",
             "process": "SALMON_TXIMPORT"
         },
         {
@@ -566,7 +561,7 @@
         {
             "name": "Salmon gene TPM table",
             "description": "Table containing transcript per million (TPM) quantified genes per sample.",
-            "filetype": "gene_tpm.tsv",
+            "pattern": "gene_tpm.tsv$",
             "process": "SALMON_TXIMPORT"
         },
         {
