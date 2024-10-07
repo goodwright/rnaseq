@@ -413,7 +413,7 @@
         },
         {
             "name": "Ribosomal RNA Settings",
-            "description": "Settings to control how ribsomal RNa is handled.",
+            "description": "Settings to control how ribosomal RNA is handled.",
             "advanced": true,
             "params": {
                 "remove_ribo_rna": {
