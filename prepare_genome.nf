@@ -1,7 +1,7 @@
 // Test this workflow using:
 // nextflow run ./flow/wrappers/prepare_genome.nf -profile docker,test -c ./nextflow.config -c ./flow/conf/test_wrapper.config --outdir ./results
 
-include { PREPARE_GENOME } from 'subworkflows/local/prepare_genome.nf'
+include { PREPARE_GENOME } from './subworkflows/local/prepare_genome.nf'
 
 // If additional fasta file is provided biotype value to use when appending entries to GTF file
 def biotype = params.gencode ? "gene_type" : params.featurecounts_group_type
